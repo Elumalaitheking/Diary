@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>My Diary</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="theme-light">
+  <main class="app-shell">
+    <section id="authView" class="card auth-card">
+      <h1>My Calm Diary</h1>
+      <p class="muted">Your private diary space with soft colors and focus.</p>
+      <div class="auth-tabs">
+        <button id="showLogin" class="active">Login</button>
+        <button id="showRegister">Register</button>
+      </div>
+      <form id="authForm">
+        <input id="username" type="text" placeholder="Username" required />
+        <input id="password" type="password" placeholder="Password (8+ chars)" required />
+        <button type="submit" class="primary">Continue</button>
+      </form>
+      <p id="authMessage" class="muted"></p>
+    </section>
+
+    <section id="appView" class="hidden">
+      <header class="topbar card">
+        <h2 id="pageTitle">Home</h2>
+        <button id="logoutBtn" class="ghost">Logout</button>
+      </header>
+
+      <section id="homeSection" class="view card"></section>
+
+      <section id="entrySection" class="view card hidden">
+        <h3>Add Diary Entry</h3>
+        <form id="entryForm">
+          <label>Date</label>
+          <input id="entryDate" type="date" required />
+          <label>Title / Event</label>
+          <input id="entryTitle" type="text" placeholder="What happened today?" required spellcheck="true" />
+          <label>Diary Text</label>
+          <div class="toolbar">
+            <button type="button" data-cmd="italic">Italic</button>
+            <button type="button" data-cmd="insertParagraph">New Paragraph</button>
+            <button type="button" id="spellFixBtn">Auto-Correct</button>
+          </div>
+          <div id="entryContent" class="editor" contenteditable="true" spellcheck="true" autocapitalize="sentences"></div>
+          <label>Photos</label>
+          <input id="entryPhotos" type="file" accept="image/*" multiple capture="environment" />
+          <button type="submit" class="primary">Save Entry</button>
+          <small class="muted" id="draftStatus"></small>
+        </form>
+      </section>
+
+      <section id="searchSection" class="view card hidden">
+        <h3>Search Diary</h3>
+        <div class="grid2">
+          <input id="searchKeyword" type="text" placeholder="Keyword / Event" />
+          <input id="searchMonth" type="number" min="1" max="12" placeholder="Month" />
+          <input id="searchYear" type="number" min="1900" max="2100" placeholder="Year" />
+          <input id="startDate" type="date" />
+          <input id="endDate" type="date" />
+        </div>
+        <button id="runSearch" class="primary">Search</button>
+        <div id="searchResults"></div>
+      </section>
+
+      <section id="notesSection" class="view card hidden">
+        <h3>Notes</h3>
+        <form id="noteForm">
+          <select id="noteCategory">
+            <option value="personal">Personal</option>
+            <option value="learning">Learning</option>
+            <option value="ideas">Ideas</option>
+          </select>
+          <input id="noteTitle" type="text" placeholder="Note title" required />
+          <textarea id="noteContent" placeholder="Write your note" required></textarea>
+          <button type="submit" class="primary">Save Note</button>
+        </form>
+        <input id="noteSearch" type="text" placeholder="Search notes" />
+        <div id="noteResults"></div>
+      </section>
+
+      <section id="settingsSection" class="view card hidden">
+        <h3>Settings</h3>
+        <div class="stack">
+          <button id="toggleTheme" class="primary">Toggle Light/Dark</button>
+          <button id="exportText">Export as Text</button>
+          <button id="printPdf">Export as PDF (Print)</button>
+          <button id="downloadBackup">Backup Data (JSON)</button>
+          <label class="fileLabel">Restore Backup<input id="restoreBackup" type="file" accept="application/json" /></label>
+        </div>
+
+        <h4>Change Password</h4>
+        <form id="passwordForm">
+          <input id="currentPassword" type="password" placeholder="Current password" required />
+          <input id="newPassword" type="password" placeholder="New password (8+ chars)" required />
+          <button class="primary" type="submit">Change Password</button>
+        </form>
+
+        <h4>Reminders</h4>
+        <form id="reminderForm" class="grid2">
+          <input id="reminderTitle" type="text" placeholder="Reminder title" required />
+          <select id="reminderType">
+            <option value="event">Event</option>
+            <option value="learning">Learning</option>
+            <option value="task">Task</option>
+          </select>
+          <input id="reminderTime" type="datetime-local" required />
+          <button class="primary" type="submit">Set Reminder</button>
+        </form>
+        <div id="reminderList"></div>
+      </section>
+
+      <nav class="bottom-nav">
+        <button data-view="homeSection" class="active">Home</button>
+        <button data-view="entrySection">Add Entry</button>
+        <button data-view="searchSection">Search</button>
+        <button data-view="notesSection">Notes</button>
+        <button data-view="settingsSection">Settings</button>
+      </nav>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
