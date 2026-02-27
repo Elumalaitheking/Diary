@@ -14,40 +14,47 @@ const MIME = {
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.svg': 'image/svg+xml',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.webp': 'image/webp'
 };
 
+function send(res, code, body, contentType = 'text/plain; charset=utf-8') {
+  res.writeHead(code, { 'Content-Type': contentType, 'Cache-Control': 'no-store' });
+  res.end(body);
+}
+
 const server = http.createServer((req, res) => {
-  const reqPath = req.url === '/' ? '/index.html' : req.url.split('?')[0];
-  const safePath = path.normalize(reqPath).replace(/^\.\.(\/|\\|$)+/, '');
-  const filePath = path.join(PUBLIC_DIR, safePath);
+  const urlPath = req.url.split('?')[0];
+  const requestPath = urlPath === '/' ? '/index.html' : urlPath;
+  const normalized = path.posix.normalize(requestPath).replace(/^\.\.(\/|$)+/, '');
+  const filePath = path.join(PUBLIC_DIR, normalized);
 
   if (!filePath.startsWith(PUBLIC_DIR)) {
-    res.writeHead(403);
-    res.end('Forbidden');
+    send(res, 403, 'Forbidden');
     return;
   }
 
   fs.readFile(filePath, (err, data) => {
-    if (err) {
-      fs.readFile(path.join(PUBLIC_DIR, 'index.html'), (indexErr, indexData) => {
-        if (indexErr) {
-          res.writeHead(404);
-          res.end('Not found');
-          return;
-        }
-        res.writeHead(200, { 'Content-Type': MIME['.html'] });
-        res.end(indexData);
-      });
+    if (!err) {
+      const ext = path.extname(filePath).toLowerCase();
+      send(res, 200, data, MIME[ext] || 'application/octet-stream');
       return;
     }
 
-    const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, {
-      'Content-Type': MIME[ext] || 'application/octet-stream',
-      'Cache-Control': 'no-store'
+    // If a direct asset/file path is missing, return 404 instead of HTML fallback.
+    if (path.extname(normalized)) {
+      send(res, 404, 'Not found');
+      return;
+    }
+
+    // SPA fallback for route-like URLs.
+    fs.readFile(path.join(PUBLIC_DIR, 'index.html'), (indexErr, indexData) => {
+      if (indexErr) {
+        send(res, 404, 'Not found');
+        return;
+      }
+      send(res, 200, indexData, MIME['.html']);
     });
-    res.end(data);
   });
 });
 

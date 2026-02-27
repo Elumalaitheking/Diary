@@ -1,24 +1,30 @@
 :root {
-  --bg: #f5efe5;
-  --card: #fffaf2;
-  --primary: #8eb8c8;
-  --accent: #8b6f5a;
+  --bg: #f8f1e8;
+  --card: #fffdf8;
+  --primary: #7aa7b8;
+  --primary-strong: #5d8fa3;
+  --accent: #b67e62;
   --text: #2b2621;
+  --muted: #6f665c;
+  --border: #e4d8cb;
 }
 
 body.theme-dark {
-  --bg: #202124;
-  --card: #2b2d31;
-  --primary: #7ea8b7;
-  --accent: #b3a08f;
-  --text: #f2f2f2;
+  --bg: #1f2329;
+  --card: #2a3038;
+  --primary: #78aab8;
+  --primary-strong: #5b8e9f;
+  --accent: #d4a98f;
+  --text: #f3f4f6;
+  --muted: #b8bec8;
+  --border: #3b4552;
 }
 
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: "Inter", system-ui, sans-serif;
-  background: var(--bg);
+  background: radial-gradient(circle at top, #fff8ef 0%, var(--bg) 45%);
   color: var(--text);
 }
 
@@ -30,40 +36,70 @@ body {
 
 .card {
   background: var(--card);
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 1rem;
   margin-bottom: 0.75rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,.07);
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 24px rgba(40, 35, 30, 0.08);
+}
+
+.topbar {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 22%, var(--card)), var(--card));
+}
+
+a, button {
+  transition: all .2s ease;
 }
 
 input, textarea, select, .editor, button {
   width: 100%;
   font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid #d8d1c7;
-  padding: 0.7rem;
+  border-radius: 11px;
+  border: 1px solid var(--border);
+  padding: 0.72rem;
   margin: 0.35rem 0;
   background: #fff;
 }
+
+input:focus, textarea:focus, select:focus, .editor:focus {
+  outline: 2px solid color-mix(in srgb, var(--primary) 45%, white);
+  border-color: var(--primary);
+}
+
 textarea { min-height: 110px; }
 .editor { min-height: 190px; background: #fff; line-height: 1.6; }
 button { background: #f8f8f8; }
-button.primary { background: var(--primary); border: none; color: #122; font-weight: 600; }
-button.ghost { background: transparent; }
+button.primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+button.primary:hover { filter: brightness(1.03); }
+button.ghost { background: transparent; color: var(--accent); border-color: transparent; }
 
 .hidden { display: none !important; }
-.muted { color: #766b60; font-size: 0.92rem; }
+.muted { color: var(--muted); font-size: 0.92rem; }
 
 .auth-tabs { display: flex; gap: 0.35rem; margin: 0.5rem 0; }
-.auth-tabs button.active, .bottom-nav button.active { background: var(--primary); }
+.auth-tabs button.active,
+.bottom-nav button.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border: none;
+}
 
 .toolbar { display: flex; gap: 0.4rem; }
 .toolbar button { flex: 1; font-size: .9rem; padding: .55rem; }
 
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
 .stack > * { margin-bottom: .45rem; }
-.fileLabel { display: block; }
+.fileLabel { display: block; color: var(--accent); font-weight: 500; }
 .fileLabel input { margin-top: .3rem; }
+
+.entry-card {
+  border-left: 4px solid color-mix(in srgb, var(--accent) 70%, transparent);
+}
 
 .entry-card img {
   width: 100%;
@@ -79,15 +115,19 @@ button.ghost { background: transparent; }
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: .3rem;
-  background: var(--card);
-  padding: .5rem;
+  background: color-mix(in srgb, var(--card) 88%, white);
+  padding: .55rem;
   box-shadow: 0 -8px 18px rgba(0,0,0,.1);
+  border-top: 1px solid var(--border);
 }
+
 .bottom-nav button {
   margin: 0;
-  padding: .6rem .3rem;
+  padding: .62rem .3rem;
   font-size: .82rem;
 }
+
+#authMessage { min-height: 1.2rem; }
 
 @media (min-width: 700px) {
   .app-shell { padding-bottom: 1rem; }
