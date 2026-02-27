@@ -1,0 +1,100 @@
+:root {
+  --bg: #f5efe5;
+  --card: #fffaf2;
+  --primary: #8eb8c8;
+  --accent: #8b6f5a;
+  --text: #2b2621;
+}
+
+body.theme-dark {
+  --bg: #202124;
+  --card: #2b2d31;
+  --primary: #7ea8b7;
+  --accent: #b3a08f;
+  --text: #f2f2f2;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-shell {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0.75rem 0.75rem 5.75rem;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,.07);
+}
+
+input, textarea, select, .editor, button {
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #d8d1c7;
+  padding: 0.7rem;
+  margin: 0.35rem 0;
+  background: #fff;
+}
+textarea { min-height: 110px; }
+.editor { min-height: 190px; background: #fff; line-height: 1.6; }
+button { background: #f8f8f8; }
+button.primary { background: var(--primary); border: none; color: #122; font-weight: 600; }
+button.ghost { background: transparent; }
+
+.hidden { display: none !important; }
+.muted { color: #766b60; font-size: 0.92rem; }
+
+.auth-tabs { display: flex; gap: 0.35rem; margin: 0.5rem 0; }
+.auth-tabs button.active, .bottom-nav button.active { background: var(--primary); }
+
+.toolbar { display: flex; gap: 0.4rem; }
+.toolbar button { flex: 1; font-size: .9rem; padding: .55rem; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+.stack > * { margin-bottom: .45rem; }
+.fileLabel { display: block; }
+.fileLabel input { margin-top: .3rem; }
+
+.entry-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: .3rem;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: .3rem;
+  background: var(--card);
+  padding: .5rem;
+  box-shadow: 0 -8px 18px rgba(0,0,0,.1);
+}
+.bottom-nav button {
+  margin: 0;
+  padding: .6rem .3rem;
+  font-size: .82rem;
+}
+
+@media (min-width: 700px) {
+  .app-shell { padding-bottom: 1rem; }
+  .bottom-nav {
+    position: static;
+    margin-top: .5rem;
+    box-shadow: none;
+    border-radius: 12px;
+  }
+}
