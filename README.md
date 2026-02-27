@@ -1,67 +1,51 @@
 # Mobile-First Personal Diary Web App
 
-A calm, private diary application designed for smartphone browsers. It supports secure authentication, diary entries with photos, searchable notes, reminders, theme switching, and backup/export.
+A calm, private diary app optimized for smartphones. This revision is **self-contained** and works without installing npm packages.
+
+## Why this fix
+The previous build depended on external npm packages that could not be installed in restricted environments. This version removes that blocker and runs with plain Node.js.
 
 ## Tech Stack
-- **Frontend:** Vanilla HTML/CSS/JS (mobile-first responsive)
-- **Backend:** Node.js + Express
-- **Database:** SQLite via better-sqlite3
-- **Image processing:** sharp (auto compression / resize)
-- **Auth:** JWT + bcrypt password hashing
+- Frontend: HTML/CSS/Vanilla JS (mobile-first)
+- Runtime server: Node.js built-in `http` static server
+- Storage: Browser `localStorage` (encrypted diary payload)
+- Crypto: Browser Web Crypto API (`PBKDF2 + AES-GCM`)
 
-## Features Implemented
-1. Secure user registration/login with hashed password and JWT authentication.
-2. Password change workflow.
-3. Diary entries with date, title, rich text (contenteditable), and multi-photo upload.
-4. Photo compression on upload for mobile performance.
-5. Autosave drafts in localStorage.
-6. Auto-correction helper for common spelling mistakes plus browser spellcheck/autocapitalize.
-7. Search/filter entries by keyword, month, year, start/end date.
-8. Notes section with categories (personal, learning, ideas), editing, and search.
-9. Reminder system with browser notifications fallback to alert.
-10. Bottom navigation optimized for phone use.
-11. Theme toggle (light/dark) saved per user.
-12. Export entries/notes as text and PDF through print dialog.
-13. Backup/restore JSON for data portability.
+## Features
+- Register/login with password
+- Password change
+- Private diary entries (date/title/rich text/multiple photos)
+- Photo compression in-browser for mobile performance
+- Auto-save draft
+- Spell-fix helper + browser spellcheck
+- Search/filter by keyword/month/year/date-range
+- Notes section with categories and editing
+- Reminder notifications (browser notification fallback to alert)
+- Light/dark theme
+- Export text + Print to PDF
+- Backup and restore JSON
+- Bottom mobile navigation and calm diary-style design
 
-## Project Structure
-- `server.js` - API server and SQLite initialization
-- `schema.sql` - database schema reference
-- `public/index.html` - app UI
-- `public/styles.css` - mobile-first diary styling
-- `public/app.js` - frontend behavior and API integration
-- `uploads/` - compressed uploaded images
-- `diary.db` - generated SQLite database
+## Data model
+- Local encrypted object stored in browser:
+  - `entries[]`
+  - `notes[]`
+  - `reminders[]`
+  - `settings`
 
-## Setup Instructions
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
-2. Start server:
-   ```bash
-   npm start
-   ```
-3. Open in browser:
-   - Local: `http://localhost:3000`
-   - On same Wi-Fi phone: `http://<your-computer-ip>:3000`
+A relational SQL schema is still included in `schema.sql` as an optional cloud/backend upgrade target.
 
-## Mobile Use Tips
-- Add the site to your phone home screen for app-like use.
-- Allow notifications to receive reminder alerts.
-- Use camera/gallery upload directly from the entry form.
+## Run
+```bash
+npm start
+```
+Then open:
+- `http://localhost:3000`
 
-## Security Notes
-- Passwords are hashed using bcrypt.
-- Protected API routes require valid JWT.
-- Helmet is enabled for baseline HTTP security headers.
-- Set a strong secret in production:
-  ```bash
-  JWT_SECRET="very-strong-secret" npm start
-  ```
+For phone access on same Wi‑Fi:
+- `http://<your-computer-ip>:3000`
 
-## Cloud Upgrade Path
-Current storage is local SQLite + filesystem. To move to cloud:
-- Replace SQLite with PostgreSQL/MySQL managed DB.
-- Move uploads to object storage (S3/R2/GCS).
-- Keep API contract similar so frontend changes are minimal.
+## Security notes
+- Password-gated access with encrypted diary payload at rest in browser storage.
+- This is local-first privacy, not enterprise-grade server-side security.
+- For multi-device sync/cloud, migrate to backend DB (see `schema.sql`).
